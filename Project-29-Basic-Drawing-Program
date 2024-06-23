@@ -1,0 +1,85 @@
+#include <iostream>
+#include <vector>
+#include <string>
+
+// Function to clear the console screen (works on most systems)
+void clearScreen() {
+    #ifdef _WIN32
+        system("cls");
+    #else
+        system("clear");
+    #endif
+}
+
+// Function to display the canvas
+void displayCanvas(const std::vector<std::vector<char>>& canvas) {
+    clearScreen();
+    for (const auto& row : canvas) {
+        for (char pixel : row) {
+            std::cout << pixel << ' ';
+        }
+        std::cout << '\n';
+    }
+}
+
+int main() {
+    // Define canvas size
+    const int width = 20;
+    const int height = 10;
+
+    // Create a 2D vector to represent the canvas
+    // Initialize with spaces (empty canvas)
+    std::vector<std::vector<char>> canvas(height, std::vector<char>(width, ' '));
+
+    // Current cursor position
+    int x = 0;
+    int y = 0;
+
+    // Main drawing loop
+    while (true) {
+        // Display the current state of the canvas
+        displayCanvas(canvas);
+
+        // Display cursor position
+        std::cout << "Cursor at (" << x << ", " << y << ")\n";
+
+        // Display menu
+        std::cout << "Commands: w(up) s(down) a(left) d(right) p(paint) c(clear) q(quit)\n";
+        std::cout << "Enter command: ";
+
+        // Get user input
+        char command;
+        std::cin >> command;
+
+        // Process user input
+        switch (command) {
+            case 'w': // Move up
+                y = (y > 0) ? y - 1 : y;
+                break;
+            case 's': // Move down
+                y = (y < height - 1) ? y + 1 : y;
+                break;
+            case 'a': // Move left
+                x = (x > 0) ? x - 1 : x;
+                break;
+            case 'd': // Move right
+                x = (x < width - 1) ? x + 1 : x;
+                break;
+            case 'p': // Paint current position
+                canvas[y][x] = '*';
+                break;
+            case 'c': // Clear the canvas
+                for (auto& row : canvas) {
+                    std::fill(row.begin(), row.end(), ' ');
+                }
+                break;
+            case 'q': // Quit the program
+                std::cout << "Thanks for drawing!\n";
+                return 0;
+            default:
+                std::cout << "Invalid command. Try again.\n";
+        }
+    }
+
+    return 0;
+}
