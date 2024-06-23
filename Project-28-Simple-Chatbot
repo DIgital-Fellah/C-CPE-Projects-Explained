@@ -1,0 +1,63 @@
+#include <iostream>
+#include <string>
+#include <vector>
+#include <algorithm>
+
+// Function to convert a string to lowercase
+std::string to_lowercase(std::string text) {
+    // Transform each character to lowercase
+    std::transform(text.begin(), text.end(), text.begin(), ::tolower);
+    return text;
+}
+
+int main() {
+    // Declare variables
+    std::string user_input;
+    bool chatting = true;
+
+    // Vector of predefined responses
+    std::vector<std::pair<std::string, std::string>> responses = {
+        {"hello", "Hi there! How can I help you today?"},
+        {"how are you", "I'm just a program, but I'm functioning well. How about you?"},
+        {"what's your name", "I'm ChatBot, nice to meet you!"},
+        {"bye", "Goodbye! Have a great day!"},
+        {"thank you", "You're welcome! Is there anything else I can help with?"}
+    };
+
+    // Welcome message
+    std::cout << "ChatBot: Hello! I'm a simple chatbot. Type 'bye' to exit." << std::endl;
+
+    // Main chat loop
+    while (chatting) {
+        // Prompt for user input
+        std::cout << "You: ";
+        std::getline(std::cin, user_input);
+
+        // Convert user input to lowercase for easier matching
+        user_input = to_lowercase(user_input);
+
+        // Flag to check if a match was found
+        bool found_match = false;
+
+        // Check user input against predefined responses
+        for (const auto& response : responses) {
+            if (user_input.find(response.first) != std::string::npos) {
+                std::cout << "ChatBot: " << response.second << std::endl;
+                found_match = true;
+                break;
+            }
+        }
+
+        // If no match was found, provide a default response
+        if (!found_match) {
+            std::cout << "ChatBot: I'm not sure how to respond to that. Can you try rephrasing?" << std::endl;
+        }
+
+        // Check if the user wants to exit
+        if (user_input == "bye") {
+            chatting = false;
+        }
+    }
+
+    return 0;
+}
