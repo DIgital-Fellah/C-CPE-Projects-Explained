@@ -1,0 +1,53 @@
+#include <iostream>
+#include <string>
+#include <cmath>
+
+// Function to convert binary to decimal
+int binaryToDecimal(const std::string& binary) {
+    int decimal = 0;
+    int power = 0;
+    
+    // Iterate through the binary string from right to left
+    for (int i = binary.length() - 1; i >= 0; i--) {
+        // Check if the current digit is '1'
+        if (binary[i] == '1') {
+            // Use bitwise left shift to calculate 2^power
+            // This is equivalent to pow(2, power) but more efficient
+            decimal += (1 << power);
+        }
+        // Move to the next power of 2
+        power++;
+    }
+    
+    return decimal;
+}
+
+int main() {
+    std::string binary;
+    
+    // Prompt the user to enter a binary number
+    std::cout << "Enter a binary number: ";
+    std::cin >> binary;
+    
+    // Variable to check if the input is valid
+    bool isValid = true;
+    
+    // Check if each character in the input is either '0' or '1'
+    for (char c : binary) {
+        if (c != '0' && c != '1') {
+            isValid = false;
+            break;
+        }
+    }
+    
+    if (isValid) {
+        // If input is valid, convert binary to decimal and display the result
+        int decimal = binaryToDecimal(binary);
+        std::cout << "Decimal equivalent: " << decimal << std::endl;
+    } else {
+        // If input is invalid, display an error message
+        std::cout << "Invalid binary number. Please use only 0s and 1s." << std::endl;
+    }
+    
+    return 0;
+}
