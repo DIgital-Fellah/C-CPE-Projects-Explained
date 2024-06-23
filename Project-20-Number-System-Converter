@@ -1,0 +1,146 @@
+#include <iostream>
+#include <string>
+#include <cmath>
+
+// Function to convert decimal to binary
+std::string decimalToBinary(int decimal) {
+    std::string binary = "";
+    
+    // If the decimal is 0, return "0"
+    if (decimal == 0) {
+        return "0";
+    }
+    
+    // Keep dividing by 2 and store remainders
+    while (decimal > 0) {
+        // Add the remainder (0 or 1) to the left of the binary string
+        binary = std::to_string(decimal % 2) + binary;
+        // Integer division by 2
+        decimal /= 2;
+    }
+    
+    return binary;
+}
+
+// Function to convert binary to decimal
+int binaryToDecimal(const std::string& binary) {
+    int decimal = 0;
+    int power = 0;
+    
+    // Start from the rightmost digit
+    for (int i = binary.length() - 1; i >= 0; i--) {
+        // If the digit is '1', add 2^power to the decimal
+        if (binary[i] == '1') {
+            decimal += std::pow(2, power);
+        }
+        // Move to the next power of 2
+        power++;
+    }
+    
+    return decimal;
+}
+
+// Function to convert decimal to hexadecimal
+std::string decimalToHex(int decimal) {
+    std::string hex = "";
+    const char hexChars[] = "0123456789ABCDEF";
+    
+    // If the decimal is 0, return "0"
+    if (decimal == 0) {
+        return "0";
+    }
+    
+    // Keep dividing by 16 and store remainders
+    while (decimal > 0) {
+        // Get the remainder and convert it to a hex character
+        hex = hexChars[decimal % 16] + hex;
+        // Integer division by 16
+        decimal /= 16;
+    }
+    
+    return hex;
+}
+
+// Function to convert hexadecimal to decimal
+int hexToDecimal(const std::string& hex) {
+    int decimal = 0;
+    int power = 0;
+    
+    // Start from the rightmost digit
+    for (int i = hex.length() - 1; i >= 0; i--) {
+        int digit;
+        // Convert hex character to integer value
+        if (hex[i] >= '0' && hex[i] <= '9') {
+            digit = hex[i] - '0';
+        } else if (hex[i] >= 'A' && hex[i] <= 'F') {
+            digit = hex[i] - 'A' + 10;
+        } else if (hex[i] >= 'a' && hex[i] <= 'f') {
+            digit = hex[i] - 'a' + 10;
+        } else {
+            // Invalid hex character
+            return -1;
+        }
+        
+        // Add digit * 16^power to the decimal
+        decimal += digit * std::pow(16, power);
+        // Move to the next power of 16
+        power++;
+    }
+    
+    return decimal;
+}
+
+int main() {
+    int choice;
+    std::string input;
+    
+    // Main program loop
+    while (true) {
+        // Display menu
+        std::cout << "\nNumber System Converter\n";
+        std::cout << "1. Decimal to Binary\n";
+        std::cout << "2. Binary to Decimal\n";
+        std::cout << "3. Decimal to Hexadecimal\n";
+        std::cout << "4. Hexadecimal to Decimal\n";
+        std::cout << "5. Exit\n";
+        std::cout << "Enter your choice (1-5): ";
+        std::cin >> choice;
+        
+        // Process user's choice
+        switch (choice) {
+            case 1:
+                // Decimal to Binary
+                std::cout << "Enter a decimal number: ";
+                std::cin >> input;
+                std::cout << "Binary: " << decimalToBinary(std::stoi(input)) << std::endl;
+                break;
+            case 2:
+                // Binary to Decimal
+                std::cout << "Enter a binary number: ";
+                std::cin >> input;
+                std::cout << "Decimal: " << binaryToDecimal(input) << std::endl;
+                break;
+            case 3:
+                // Decimal to Hexadecimal
+                std::cout << "Enter a decimal number: ";
+                std::cin >> input;
+                std::cout << "Hexadecimal: " << decimalToHex(std::stoi(input)) << std::endl;
+                break;
+            case 4:
+                // Hexadecimal to Decimal
+                std::cout << "Enter a hexadecimal number: ";
+                std::cin >> input;
+                std::cout << "Decimal: " << hexToDecimal(input) << std::endl;
+                break;
+            case 5:
+                // Exit the program
+                std::cout << "Goodbye!" << std::endl;
+                return 0;
+            default:
+                // Invalid choice
+                std::cout << "Invalid choice. Please try again." << std::endl;
+        }
+    }
+    
+    return 0;
+}
