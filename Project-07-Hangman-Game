@@ -1,0 +1,98 @@
+#include <iostream>
+#include <string>
+#include <vector>
+#include <cstdlib>
+#include <ctime>
+
+// Function to clear the console screen (works on most systems)
+void clearScreen() {
+    #ifdef _WIN32
+        system("cls");
+    #else
+        system("clear");
+    #endif
+}
+
+int main() {
+    // Seed the random number generator with the current time
+    std::srand(static_cast<unsigned int>(std::time(nullptr)));
+
+    // List of words for the game
+    std::vector<std::string> words = {"programming", "hangman", "computer", "algorithm", "developer"};
+
+    // Randomly select a word from the list
+    std::string word = words[std::rand() % words.size()];
+
+    // Create a string of underscores the same length as the word
+    std::string guessedWord(word.length(), '_');
+
+    // Number of incorrect guesses allowed
+    int maxAttempts = 6;
+    int attempts = 0;
+
+    // Vector to store incorrect guesses
+    std::vector<char> incorrectGuesses;
+
+    // Main game loop
+    while (attempts < maxAttempts) {
+        clearScreen();
+
+        // Display the hangman ASCII art
+        std::cout << "  +---+" << std::endl;
+        std::cout << "  |   |" << std::endl;
+        std::cout << "  " << (attempts > 0 ? "O" : " ") << "   |" << std::endl;
+        std::cout << " " << (attempts > 1 ? "/" : " ") << (attempts > 2 ? "|" : " ") << (attempts > 3 ? "\\" : " ") << "  |" << std::endl;
+        std::cout << " " << (attempts > 4 ? "/" : " ") << " " << (attempts > 5 ? "\\" : " ") << "  |" << std::endl;
+        std::cout << "      |" << std::endl;
+        std::cout << "==========" << std::endl;
+
+        // Display the current state of the guessed word
+        std::cout << "Word: " << guessedWord << std::endl;
+
+        // Display incorrect guesses
+        std::cout << "Incorrect guesses: ";
+        for (char c : incorrectGuesses) {
+            std::cout << c << " ";
+        }
+        std::cout << std::endl;
+
+        // Display remaining attempts
+        std::cout << "Attempts left: " << maxAttempts - attempts << std::endl;
+
+        // Prompt the user for a guess
+        char guess;
+        std::cout << "Enter your guess: ";
+        std::cin >> guess;
+
+        // Convert the guess to lowercase
+        guess = std::tolower(guess);
+
+        // Check if the guess is correct
+        bool correctGuess = false;
+        for (size_t i = 0; i < word.length(); ++i) {
+            if (word[i] == guess) {
+                guessedWord[i] = guess;
+                correctGuess = true;
+            }
+        }
+
+        // If the guess is incorrect, add it to incorrectGuesses and increment attempts
+        if (!correctGuess) {
+            incorrectGuesses.push_back(guess);
+            ++attempts;
+        }
+
+        // Check if the player has won
+        if (guessedWord == word) {
+            clearScreen();
+            std::cout << "Congratulations! You've guessed the word: " << word << std::endl;
+            return 0;
+        }
+    }
+
+    // If the loop ends, the player has lost
+    clearScreen();
+    std::cout << "Game over! The word was: " << word << std::endl;
+
+    return 0;
+}
