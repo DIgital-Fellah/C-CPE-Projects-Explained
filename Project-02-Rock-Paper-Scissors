@@ -1,0 +1,70 @@
+#include <iostream>
+#include <cstdlib>
+#include <ctime>
+
+// Function to get the computer's choice
+int getComputerChoice() {
+    // Generate a random number between 0 and 2
+    return rand() % 3;
+}
+
+// Function to get the player's choice
+int getPlayerChoice() {
+    int choice;
+    std::cout << "Enter your choice (0 for Rock, 1 for Paper, 2 for Scissors): ";
+    std::cin >> choice;
+    
+    // Validate the input
+    while (choice < 0 || choice > 2) {
+        std::cout << "Invalid choice. Please enter 0, 1, or 2: ";
+        std::cin >> choice;
+    }
+    
+    return choice;
+}
+
+// Function to determine the winner
+void determineWinner(int playerChoice, int computerChoice) {
+    // Array to store the choices as strings
+    std::string choices[] = {"Rock", "Paper", "Scissors"};
+    
+    // Print the choices
+    std::cout << "You chose: " << choices[playerChoice] << std::endl;
+    std::cout << "Computer chose: " << choices[computerChoice] << std::endl;
+    
+    // Determine the winner using conditional statements
+    if (playerChoice == computerChoice) {
+        std::cout << "It's a tie!" << std::endl;
+    } else if ((playerChoice == 0 && computerChoice == 2) ||
+               (playerChoice == 1 && computerChoice == 0) ||
+               (playerChoice == 2 && computerChoice == 1)) {
+        std::cout << "You win!" << std::endl;
+    } else {
+        std::cout << "Computer wins!" << std::endl;
+    }
+}
+
+// Main function - entry point of the program
+int main() {
+    // Seed the random number generator
+    srand(static_cast<unsigned int>(time(0)));
+    
+    char playAgain;
+    
+    do {
+        // Get choices from player and computer
+        int playerChoice = getPlayerChoice();
+        int computerChoice = getComputerChoice();
+        
+        // Determine and display the winner
+        determineWinner(playerChoice, computerChoice);
+        
+        // Ask if the player wants to play again
+        std::cout << "Do you want to play again? (y/n): ";
+        std::cin >> playAgain;
+    } while (playAgain == 'y' || playAgain == 'Y');
+    
+    std::cout << "Thanks for playing!" << std::endl;
+    
+    return 0;
+}
