@@ -1,0 +1,107 @@
+#include <iostream>
+#include <vector>
+#include <algorithm>
+#include <ctime>
+#include <cstdlib>
+
+// Function to clear the console screen (works for most systems)
+void clearScreen() {
+    #ifdef _WIN32
+        system("cls");
+    #else
+        system("clear");
+    #endif
+}
+
+// Function to print the game board
+void printBoard(const std::vector<char>& board, const std::vector<bool>& revealed) {
+    for (int i = 0; i < board.size(); ++i) {
+        // If the card is revealed, show its value; otherwise, show '*'
+        if (revealed[i]) {
+            std::cout << board[i] << " ";
+        } else {
+            std::cout << "* ";
+        }
+        // Start a new line after every 4 cards
+        if ((i + 1) % 4 == 0) {
+            std::cout << std::endl;
+        }
+    }
+    std::cout << std::endl;
+}
+
+int main() {
+    // Seed the random number generator
+    std::srand(static_cast<unsigned int>(std::time(nullptr)));
+
+    // Create a vector of cards (pairs of letters)
+    std::vector<char> cards = {'A', 'A', 'B', 'B', 'C', 'C', 'D', 'D', 'E', 'E', 'F', 'F', 'G', 'G', 'H', 'H'};
+
+    // Shuffle the cards randomly
+    std::random_shuffle(cards.begin(), cards.end());
+
+    // Create a vector to keep track of which cards are revealed
+    std::vector<bool> revealed(16, false);
+
+    int pairsFound = 0;
+    int attempts = 0;
+
+    while (pairsFound < 8) {  // Game continues until all 8 pairs are found
+        clearScreen();
+        std::cout << "Memory Card Game" << std::endl;
+        std::cout << "Pairs found: " << pairsFound << " / 8" << std::endl;
+        std::cout << "Attempts: " << attempts << std::endl << std::endl;
+
+        // Print the current state of the board
+        printBoard(cards, revealed);
+
+        int first, second;
+        
+        // Get the first card selection from the user
+        do {
+            std::cout << "Select first card (1-16): ";
+            std::cin >> first;
+            first--;  // Adjust for 0-based indexing
+        } while (first < 0 || first >= 16 || revealed[first]);
+
+        // Reveal the first selected card
+        revealed[first] = true;
+        clearScreen();
+        printBoard(cards, revealed);
+
+        // Get the second card selection from the user
+        do {
+            std::cout << "Select second card (1-16): ";
+            std::cin >> second;
+            second--;  // Adjust for 0-based indexing
+        } while (second < 0 || second >= 16 || revealed[second] || second == first);
+
+        // Reveal the second selected card
+        revealed[second] = true;
+        clearScreen();
+        printBoard(cards, revealed);
+
+        // Check if the selected cards match
+        if (cards[first] == cards[second]) {
+            std::cout << "Match found!" << std::endl;
+            pairsFound++;
+        } else {
+            std::cout << "No match. Try again." << std::endl;
+            // Hide the cards again after a brief pause
+            std::cout << "Press Enter to continue...";
+            std::cin.ignore();
+            std::cin.get();
+            revealed[first] = false;
+            revealed[second] = false;
+        }
+
+        attempts++;
+    }
+
+    // Game over - all pairs found
+    clearScreen();
+    std::cout << "Congratulations! You've found all pairs." << std::endl;
+    std::cout << "Total attempts: " << attempts << std::endl;
+
+    return 0;
+}
