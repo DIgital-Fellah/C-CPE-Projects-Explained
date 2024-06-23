@@ -1,0 +1,65 @@
+#include <iostream>
+#include <string>
+#include <unordered_map>
+
+// Function to convert a single character to Morse code
+std::string charToMorse(char c) {
+    // Create a map (dictionary) to store Morse code for each letter and number
+    static const std::unordered_map<char, std::string> morseMap = {
+        {'A', ".-"}, {'B', "-..."}, {'C', "-.-."}, {'D', "-.."}, {'E', "."},
+        {'F', "..-."}, {'G', "--."}, {'H', "...."}, {'I', ".."}, {'J', ".---"},
+        {'K', "-.-"}, {'L', ".-.."}, {'M', "--"}, {'N', "-."}, {'O', "---"},
+        {'P', ".--."}, {'Q', "--.-"}, {'R', ".-."}, {'S', "..."}, {'T', "-"},
+        {'U', "..-"}, {'V', "...-"}, {'W', ".--"}, {'X', "-..-"}, {'Y', "-.--"},
+        {'Z', "--.."},
+        {'0', "-----"}, {'1', ".----"}, {'2', "..---"}, {'3', "...--"}, {'4', "....-"},
+        {'5', "....."}, {'6', "-...."}, {'7', "--..."}, {'8', "---.."}, {'9', "----."}
+    };
+
+    // Convert the input character to uppercase
+    c = toupper(c);
+
+    // Check if the character exists in our Morse code map
+    if (morseMap.find(c) != morseMap.end()) {
+        return morseMap.at(c);  // Return the Morse code for this character
+    } else {
+        return "";  // Return an empty string for unknown characters
+    }
+}
+
+int main() {
+    std::string input;
+    std::string output = "";
+
+    // Prompt the user to enter a message
+    std::cout << "Enter a message to convert to Morse code: ";
+    
+    // Get the entire line of input, including spaces
+    std::getline(std::cin, input);
+
+    // Loop through each character in the input string
+    for (char c : input) {
+        if (c == ' ') {
+            // If the character is a space, add 3 spaces to separate words in Morse code
+            output += "   ";
+        } else {
+            // Convert the character to Morse code
+            std::string morseChar = charToMorse(c);
+            
+            // If we got a valid Morse code (not an empty string)
+            if (!morseChar.empty()) {
+                // Add the Morse code for this character to our output
+                output += morseChar;
+                // Add a space to separate characters in Morse code
+                output += " ";
+            }
+        }
+    }
+
+    // Print the resulting Morse code
+    std::cout << "Morse code: " << output << std::endl;
+
+    return 0;  // End the program
+}
+
+// Over
