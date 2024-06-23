@@ -1,0 +1,68 @@
+#include <iostream>
+#include <cmath>
+
+// Function to check if a number is prime
+bool isPrime(int number) {
+    // 1 is not considered a prime number
+    if (number <= 1) {
+        return false;
+    }
+    
+    // 2 is the smallest prime number
+    if (number == 2) {
+        return true;
+    }
+    
+    // Even numbers greater than 2 are not prime
+    if (number % 2 == 0) {
+        return false;
+    }
+    
+    // Check odd numbers up to the square root of the number
+    // We use square root because factors always come in pairs,
+    // and at least one factor must be less than or equal to the square root
+    for (int i = 3; i <= std::sqrt(number); i += 2) {
+        // If the number is divisible by i, it's not prime
+        if (number % i == 0) {
+            return false;
+        }
+    }
+    
+    // If we've made it through the loop, the number is prime
+    return true;
+}
+
+int main() {
+    int number;
+    char choice;
+
+    do {
+        // Prompt the user to enter a number
+        std::cout << "Enter a positive integer to check if it's prime: ";
+        std::cin >> number;
+
+        // Input validation
+        while (std::cin.fail() || number < 1) {
+            std::cout << "Invalid input. Please enter a positive integer: ";
+            std::cin.clear(); // Clear the error flag
+            std::cin.ignore(10000, '\n'); // Discard invalid input
+            std::cin >> number;
+        }
+
+        // Check if the number is prime and display the result
+        if (isPrime(number)) {
+            std::cout << number << " is a prime number." << std::endl;
+        } else {
+            std::cout << number << " is not a prime number." << std::endl;
+        }
+
+        // Ask if the user wants to check another number
+        std::cout << "Do you want to check another number? (y/n): ";
+        std::cin >> choice;
+
+    } while (choice == 'y' || choice == 'Y');
+
+    std::cout << "Thank you for using the Prime Number Checker!" << std::endl;
+
+    return 0;
+}
