@@ -1,0 +1,69 @@
+#include <iostream>
+#include <string>
+
+// Function to encrypt a single character
+char encryptChar(char ch, int shift) {
+    // Check if the character is a letter
+    if (isalpha(ch)) {
+        // Determine the base ('A' for uppercase, 'a' for lowercase)
+        char base = isupper(ch) ? 'A' : 'a';
+        // Apply the shift and wrap around the alphabet
+        return static_cast<char>((ch - base + shift) % 26 + base);
+    }
+    // If it's not a letter, return it unchanged
+    return ch;
+}
+
+// Function to decrypt a single character
+char decryptChar(char ch, int shift) {
+    // Decryption is just encryption with a negative shift
+    return encryptChar(ch, 26 - shift);
+}
+
+int main() {
+    std::string message;
+    int shift;
+    char choice;
+
+    // Main program loop
+    do {
+        // Get user input for encryption or decryption
+        std::cout << "Do you want to (E)ncrypt or (D)ecrypt? ";
+        std::cin >> choice;
+        std::cin.ignore(); // Clear the newline from the input buffer
+
+        // Get the message from the user
+        std::cout << "Enter the message: ";
+        std::getline(std::cin, message);
+
+        // Get the shift value from the user
+        std::cout << "Enter the shift value (1-25): ";
+        std::cin >> shift;
+
+        // Ensure the shift is between 1 and 25
+        shift = (shift % 26 + 26) % 26;
+
+        // Process each character in the message
+        for (char& ch : message) {
+            if (toupper(choice) == 'E') {
+                // Encrypt the character
+                ch = encryptChar(ch, shift);
+            } else if (toupper(choice) == 'D') {
+                // Decrypt the character
+                ch = decryptChar(ch, shift);
+            }
+        }
+
+        // Display the result
+        std::cout << "Result: " << message << std::endl;
+
+        // Ask if the user wants to continue
+        std::cout << "Do you want to continue? (Y/N): ";
+        std::cin >> choice;
+
+    } while (toupper(choice) == 'Y');
+
+    return 0;
+}
+
+// Over
