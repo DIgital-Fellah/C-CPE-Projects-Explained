@@ -1,0 +1,60 @@
+#include <iostream>
+#include <string>
+#include <vector>
+
+// Function to reverse a single word
+std::string reverseWord(const std::string& word) {
+    std::string reversed;
+    // Loop through the word from the end to the beginning
+    for (int i = word.length() - 1; i >= 0; i--) {
+        // Add each character to the reversed string
+        reversed += word[i];
+    }
+    return reversed;
+}
+
+int main() {
+    // Declare variables
+    std::string input;
+    std::vector<std::string> words;
+    std::string currentWord;
+
+    // Prompt the user for input
+    std::cout << "Enter a sentence to reverse its words: ";
+    // Get the entire line of input, including spaces
+    std::getline(std::cin, input);
+
+    // Process the input string
+    for (char c : input) {
+        if (c == ' ') {
+            // If we encounter a space, it means we've finished a word
+            if (!currentWord.empty()) {
+                // Add the completed word to our vector of words
+                words.push_back(currentWord);
+                // Reset currentWord for the next word
+                currentWord.clear();
+            }
+        } else {
+            // If it's not a space, add the character to the current word
+            currentWord += c;
+        }
+    }
+
+    // Add the last word if there is one (in case the input doesn't end with a space)
+    if (!currentWord.empty()) {
+        words.push_back(currentWord);
+    }
+
+    // Print the original sentence
+    std::cout << "Original sentence: " << input << std::endl;
+
+    // Print the reversed words
+    std::cout << "Sentence with reversed words: ";
+    for (const std::string& word : words) {
+        // Reverse each word and print it
+        std::cout << reverseWord(word) << " ";
+    }
+    std::cout << std::endl;
+
+    return 0;
+}
