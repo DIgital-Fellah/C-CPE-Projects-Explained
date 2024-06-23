@@ -1,0 +1,66 @@
+#include <iostream>
+#include <iomanip> // For setting precision of floating-point output
+
+// Function to convert Celsius to Fahrenheit
+double celsiusToFahrenheit(double celsius) {
+    // The formula to convert Celsius to Fahrenheit is: (C * 9/5) + 32
+    return (celsius * 9.0 / 5.0) + 32.0;
+}
+
+// Function to convert Fahrenheit to Celsius
+double fahrenheitToCelsius(double fahrenheit) {
+    // The formula to convert Fahrenheit to Celsius is: (F - 32) * 5/9
+    return (fahrenheit - 32.0) * 5.0 / 9.0;
+}
+
+int main() {
+    // Declare variables to store user input
+    double temperature;
+    char unit;
+
+    // Set the precision for floating-point output to 2 decimal places
+    std::cout << std::fixed << std::setprecision(2);
+
+    // Main program loop
+    while (true) {
+        // Prompt the user for input
+        std::cout << "Enter temperature value (or 'q' to quit): ";
+        
+        // Check if the user wants to quit
+        if (!(std::cin >> temperature)) {
+            // If input is not a number, check if it's 'q' or 'Q'
+            std::cin.clear(); // Clear the error flag
+            std::cin.ignore(10000, '\n'); // Discard invalid input
+            if (std::cin.peek() == 'q' || std::cin.peek() == 'Q') {
+                break; // Exit the loop if user enters 'q' or 'Q'
+            }
+            std::cout << "Invalid input. Please try again.\n";
+            continue; // Restart the loop
+        }
+
+        // Prompt for the unit (C or F)
+        std::cout << "Enter unit (C for Celsius, F for Fahrenheit): ";
+        std::cin >> unit;
+
+        // Convert and display the result based on the input unit
+        if (unit == 'C' || unit == 'c') {
+            // Convert Celsius to Fahrenheit
+            double fahrenheit = celsiusToFahrenheit(temperature);
+            std::cout << temperature << " Celsius is " << fahrenheit << " Fahrenheit.\n";
+        } else if (unit == 'F' || unit == 'f') {
+            // Convert Fahrenheit to Celsius
+            double celsius = fahrenheitToCelsius(temperature);
+            std::cout << temperature << " Fahrenheit is " << celsius << " Celsius.\n";
+        } else {
+            // Invalid unit entered
+            std::cout << "Invalid unit. Please enter C or F.\n";
+        }
+
+        std::cout << std::endl; // Print a blank line for readability
+    }
+
+    // Print a goodbye message
+    std::cout << "Thank you for using the temperature converter!\n";
+
+    return 0; // End the program
+}
