@@ -1,0 +1,62 @@
+#include <iostream>
+#include <cstdlib>  // For rand() and srand() functions
+#include <ctime>    // For time() function
+
+// Function to simulate rolling a die
+int rollDie() {
+    // Generate a random number between 1 and 6
+    return (rand() % 6) + 1;
+}
+
+int main() {
+    // Seed the random number generator with the current time
+    // This ensures that we get different random numbers each time we run the program
+    srand(static_cast<unsigned int>(time(0)));
+
+    char playAgain;
+    
+    do {
+        // Clear the screen (this works on most systems, but not all)
+        std::cout << "\033[2J\033[1;1H";
+
+        std::cout << "Welcome to the Dice Rolling Simulator!" << std::endl;
+        
+        int numDice;
+        
+        // Ask the user how many dice they want to roll
+        std::cout << "How many dice would you like to roll? ";
+        std::cin >> numDice;
+
+        // Validate input: make sure the number of dice is positive
+        while (numDice <= 0) {
+            std::cout << "Please enter a positive number: ";
+            std::cin >> numDice;
+        }
+
+        std::cout << "Rolling " << numDice << " dice..." << std::endl;
+
+        // Variables to keep track of the total and the results of each die
+        int total = 0;
+        
+        // Roll the dice
+        for (int i = 0; i < numDice; i++) {
+            int result = rollDie();  // Call the rollDie function to get a random number
+            total += result;  // Add the result to the total
+            
+            // Print the result of this die roll
+            std::cout << "Die " << (i + 1) << ": " << result << std::endl;
+        }
+
+        // Print the total of all dice rolls
+        std::cout << "Total: " << total << std::endl;
+
+        // Ask if the user wants to play again
+        std::cout << "Do you want to roll again? (y/n): ";
+        std::cin >> playAgain;
+
+    } while (playAgain == 'y' || playAgain == 'Y');  // Continue if the user enters 'y' or 'Y'
+
+    std::cout << "Thanks for playing!" << std::endl;
+
+    return 0;  // End the program
+}
