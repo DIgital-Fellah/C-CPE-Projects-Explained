@@ -1,0 +1,66 @@
+#include <iostream>
+#include <string>
+#include <vector>
+#include <cstdlib>
+#include <ctime>
+
+int main() {
+    // Seed the random number generator with the current time
+    // This ensures we get different random numbers each time we run the program
+    std::srand(static_cast<unsigned int>(std::time(nullptr)));
+
+    // Create a vector to store the possible Magic 8-Ball responses
+    std::vector<std::string> responses = {
+        "It is certain.",
+        "It is decidedly so.",
+        "Without a doubt.",
+        "Yes - definitely.",
+        "You may rely on it.",
+        "As I see it, yes.",
+        "Most likely.",
+        "Outlook good.",
+        "Yes.",
+        "Signs point to yes.",
+        "Reply hazy, try again.",
+        "Ask again later.",
+        "Better not tell you now.",
+        "Cannot predict now.",
+        "Concentrate and ask again.",
+        "Don't count on it.",
+        "My reply is no.",
+        "My sources say no.",
+        "Outlook not so good.",
+        "Very doubtful."
+    };
+
+    // Main game loop
+    while (true) {
+        // Prompt the user to ask a question
+        std::cout << "Ask the Magic 8-Ball a yes/no question (or type 'quit' to exit): ";
+        
+        // Read the user's input
+        std::string question;
+        std::getline(std::cin, question);
+
+        // Check if the user wants to quit
+        if (question == "quit") {
+            std::cout << "Thanks for playing!" << std::endl;
+            break;  // Exit the loop and end the program
+        }
+
+        // Generate a random index to select a response
+        // rand() % responses.size() gives a random number between 0 and (size of responses - 1)
+        int randomIndex = std::rand() % responses.size();
+
+        // Print a blank line for better readability
+        std::cout << std::endl;
+
+        // Display the Magic 8-Ball's response
+        std::cout << "The Magic 8-Ball says: " << responses[randomIndex] << std::endl;
+
+        // Print another blank line for better readability
+        std::cout << std::endl;
+    }
+
+    return 0;  // Indicate successful program completion
+}
