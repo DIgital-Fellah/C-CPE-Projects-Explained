@@ -1,0 +1,45 @@
+#include <iostream>
+#include <cstdlib>  // For rand() and srand() functions
+#include <ctime>    // For time() function
+
+int main() {
+    // Seed the random number generator with the current time
+    // This ensures we get different random numbers each time we run the program
+    srand(static_cast<unsigned int>(time(0)));
+
+    // Variables to keep track of the number of heads and tails
+    int heads = 0;
+    int tails = 0;
+
+    // Variable to store the number of flips the user wants to simulate
+    int numberOfFlips;
+
+    // Ask the user how many times they want to flip the coin
+    std::cout << "How many times do you want to flip the coin? ";
+    std::cin >> numberOfFlips;
+
+    // Loop to simulate coin flips
+    for (int i = 0; i < numberOfFlips; i++) {
+        // Generate a random number: either 0 or 1
+        // rand() generates a random number, % 2 ensures it's either 0 or 1
+        int result = rand() % 2;
+
+        // If the result is 0, it's heads. If it's 1, it's tails.
+        if (result == 0) {
+            std::cout << "Heads" << std::endl;
+            heads++;  // Increment the heads counter
+        } else {
+            std::cout << "Tails" << std::endl;
+            tails++;  // Increment the tails counter
+        }
+    }
+
+    // Print the final results
+    std::cout << "\nResults after " << numberOfFlips << " flips:" << std::endl;
+    std::cout << "Heads: " << heads << " (" 
+              << (static_cast<double>(heads) / numberOfFlips) * 100 << "%)" << std::endl;
+    std::cout << "Tails: " << tails << " (" 
+              << (static_cast<double>(tails) / numberOfFlips) * 100 << "%)" << std::endl;
+
+    return 0;  // End the program
+}
