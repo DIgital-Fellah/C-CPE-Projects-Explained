@@ -1,0 +1,96 @@
+#include <iostream>
+#include <string>
+#include <unordered_map>
+
+// The main function is the entry point of our program
+int main() {
+    // Create a dictionary (unordered_map) to store word-emoji pairs
+    std::unordered_map<std::string, std::string> emojiDict = {
+        {"happy", "😊"},
+        {"sad", "😢"},
+        {"love", "❤️"},
+        {"cat", "🐱"},
+        {"dog", "🐶"},
+        {"sun", "☀️"},
+        {"moon", "🌙"},
+        {"star", "⭐"},
+        {"pizza", "🍕"},
+        {"coffee", "☕"}
+    };
+
+    // Declare a string variable to store user input
+    std::string input;
+
+    // Print a welcome message
+    std::cout << "Welcome to the Emoji Translator!" << std::endl;
+    std::cout << "Enter a sentence to translate (or 'quit' to exit):" << std::endl;
+
+    // Start an infinite loop that will only break when the user types 'quit'
+    while (true) {
+        // Get a line of input from the user
+        std::getline(std::cin, input);
+
+        // Check if the user wants to quit
+        if (input == "quit") {
+            std::cout << "Thanks for using the Emoji Translator. Goodbye!" << std::endl;
+            break;  // Exit the loop
+        }
+
+        // Create a string to store the translated sentence
+        std::string translatedSentence = "";
+
+        // Create a temporary string to store each word
+        std::string word = "";
+
+        // Loop through each character in the input string
+        for (char c : input) {
+            if (c == ' ') {
+                // If we encounter a space, it means we've completed a word
+                
+                // Convert the word to lowercase for case-insensitive matching
+                for (char& ch : word) {
+                    ch = std::tolower(ch);
+                }
+
+                // Check if the word exists in our emoji dictionary
+                if (emojiDict.find(word) != emojiDict.end()) {
+                    // If it does, add the corresponding emoji to the translated sentence
+                    translatedSentence += emojiDict[word] + " ";
+                } else {
+                    // If it doesn't, just add the original word to the translated sentence
+                    translatedSentence += word + " ";
+                }
+
+                // Reset the word for the next iteration
+                word = "";
+            } else {
+                // If the character isn't a space, add it to the current word
+                word += c;
+            }
+        }
+
+        // Process the last word (since it's not followed by a space)
+        if (!word.empty()) {
+            // Convert the word to lowercase
+            for (char& ch : word) {
+                ch = std::tolower(ch);
+            }
+
+            // Check if the word exists in our emoji dictionary
+            if (emojiDict.find(word) != emojiDict.end()) {
+                translatedSentence += emojiDict[word];
+            } else {
+                translatedSentence += word;
+            }
+        }
+
+        // Print the translated sentence
+        std::cout << "Translated: " << translatedSentence << std::endl;
+
+        // Prompt for the next input
+        std::cout << "Enter another sentence (or 'quit' to exit):" << std::endl;
+    }
+
+    // Return 0 to indicate successful program execution
+    return 0;
+}
