@@ -1,0 +1,58 @@
+#include <iostream>
+#include <string>
+#include <vector>
+
+// Function to get user input for a specific word type
+std::string getWord(const std::string& wordType) {
+    std::string word;
+    std::cout << "Enter a " << wordType << ": ";
+    std::cin >> word;
+    return word;
+}
+
+int main() {
+    // Welcome message
+    std::cout << "Welcome to the Mad Libs Generator!" << std::endl;
+    std::cout << "Please enter the requested words to create a funny story." << std::endl;
+
+    // Vector to store the words entered by the user
+    std::vector<std::string> words;
+
+    // Get words from the user
+    words.push_back(getWord("noun"));
+    words.push_back(getWord("verb (past tense)"));
+    words.push_back(getWord("adjective"));
+    words.push_back(getWord("noun"));
+    words.push_back(getWord("verb"));
+    words.push_back(getWord("adverb"));
+
+    // Clear the input buffer
+    std::cin.ignore();
+
+    // Print a separator
+    std::cout << "\n--------------------------\n";
+
+    // Display the generated story
+    std::cout << "Here's your Mad Lib story:\n\n";
+    std::cout << "Once upon a time, there was a " << words[2] << " " << words[0] << " who " << words[1] << std::endl;
+    std::cout << "through the forest. Suddenly, a " << words[3] << " appeared and started to " << words[4] << std::endl;
+    std::cout << words[5] << ". The end.\n";
+
+    // Print another separator
+    std::cout << "\n--------------------------\n";
+
+    // Ask if the user wants to play again
+    char playAgain;
+    std::cout << "Do you want to play again? (y/n): ";
+    std::cin >> playAgain;
+
+    // If the user wants to play again, restart the program
+    if (playAgain == 'y' || playAgain == 'Y') {
+        std::cout << "\n";
+        main(); // Calling main() to restart the program (Note: this is not the best practice for larger programs)
+    } else {
+        std::cout << "Thanks for playing! Goodbye!" << std::endl;
+    }
+
+    return 0;
+}
