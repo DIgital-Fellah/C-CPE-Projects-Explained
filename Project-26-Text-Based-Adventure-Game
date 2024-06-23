@@ -1,0 +1,88 @@
+#include <iostream>
+#include <string>
+#include <vector>
+
+// Function to display the current room description
+void displayRoom(const std::string& description) {
+    std::cout << "\n" << description << "\n";
+}
+
+// Function to get user input
+std::string getUserInput() {
+    std::string input;
+    std::cout << "> ";
+    std::getline(std::cin, input);
+    return input;
+}
+
+// Main function where the game logic resides
+int main() {
+    // Game variables
+    bool gameOver = false;  // Tracks if the game has ended
+    int currentRoom = 0;    // Tracks the current room number
+    bool hasKey = false;    // Tracks if the player has found the key
+
+    // Vector to store room descriptions
+    std::vector<std::string> rooms = {
+        "You are in a dimly lit room. There's a door to the north and a window to the east.",
+        "You enter a bright, circular room. There's a door to the south and a staircase going up.",
+        "You're at the top of the stairs in a small, dusty attic. There's a chest in the corner.",
+        "You're outside the house. Congratulations, you've escaped!"
+    };
+
+    // Welcome message
+    std::cout << "Welcome to the Text Adventure Game!\n";
+    std::cout << "Enter commands like 'go north', 'look', 'take key', etc.\n";
+
+    // Main game loop
+    while (!gameOver) {
+        // Display the current room description
+        displayRoom(rooms[currentRoom]);
+
+        // Get user input
+        std::string input = getUserInput();
+
+        // Convert input to lowercase for easier comparison
+        for (char& c : input) {
+            c = std::tolower(c);
+        }
+
+        // Process user input
+        if (input == "quit" || input == "exit") {
+            // End the game if the user wants to quit
+            gameOver = true;
+            std::cout << "Thanks for playing!\n";
+        } else if (input == "look") {
+            // Redisplay the current room description
+            continue;
+        } else if (input.substr(0, 3) == "go ") {
+            // Handle movement commands
+            std::string direction = input.substr(3);
+            
+            if (currentRoom == 0 && direction == "north") {
+                currentRoom = 1;
+            } else if (currentRoom == 1 && direction == "south") {
+                currentRoom = 0;
+            } else if (currentRoom == 1 && direction == "up") {
+                currentRoom = 2;
+            } else if (currentRoom == 2 && direction == "down") {
+                currentRoom = 1;
+            } else if (currentRoom == 0 && direction == "east" && hasKey) {
+                currentRoom = 3;
+                gameOver = true;
+                std::cout << "You use the key to unlock the window and climb out.\n";
+            } else {
+                std::cout << "You can't go that way.\n";
+            }
+        } else if (input == "take key" && currentRoom == 2 && !hasKey) {
+            // Allow the player to take the key in the attic
+            hasKey = true;
+            std::cout << "You found a key in the chest and took it.\n";
+        } else {
+            // Handle invalid commands
+            std::cout << "I don't understand that command.\n";
+        }
+    }
+
+    return 0;
+}
